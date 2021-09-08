@@ -1,0 +1,8 @@
+OpenFirefoxGoogle:
+  Step: I open firefox and navigate to google
+  Roles:
+    - Role: desktopFirefox
+      App: desktop
+  Actions:
+    - Type: navigate
+      Value: https://google.com

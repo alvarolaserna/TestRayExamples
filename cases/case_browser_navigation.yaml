@@ -1,0 +1,7 @@
+OpenGoogle:
+  Roles:
+    - Role: desktopFirefox,desktopChrome
+      App: desktop
+  Actions:
+    - Given: I open chrome and navigate to google
+    - And: I open firefox and navigate to google

@@ -1,0 +1,8 @@
+CaseForMiscelaneousBuild:
+  Step: I run the miscelaneous checks
+  Roles:
+    - Role: commandLine
+      App: command
+  Actions:
+    - Type: command
+      Value: echo "$AND_CLI_MISC$"

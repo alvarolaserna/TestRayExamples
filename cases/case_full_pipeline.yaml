@@ -1,0 +1,26 @@
+FirstPipeline:
+  ParallelRoles: true
+  Environment: Env1
+  Roles:
+    - Role: commandLine   # Default role
+      App: command
+    - Role: commandLine2
+      App: command
+  Actions:
+    - Given: I run the miscelaneous checks
+    - When: I build the app
+    - Then: I run the tests
+
+
+SecondPipeline:
+  ParallelRoles: true
+  Environment: Env2
+  Roles:
+    - Role: commandLine   # Default role
+      App: command
+    - Role: commandLine2
+      App: command
+  Actions:
+    - Given: I run the miscelaneous checks
+    - When: I build the app
+    - Then: I run the tests

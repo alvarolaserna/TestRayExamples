@@ -1,0 +1,19 @@
+CaseForBuild:
+  ParallelRoles: true
+  Step: I build the app
+  Roles:
+    - Role: commandLine   # Default role
+      App: command
+    - Role: commandLine2
+      App: command
+  Actions:
+    - Type: command
+      Value: echo "Running build 1st step"
+    - Type: command
+      Value: echo "Running build 2st step"
+    - Type: command
+      Role: commandLine2
+      Value: echo "Running build 3st step"
+    - Type: command
+      Role: commandLine2
+      Value: echo "Running build 4st step"

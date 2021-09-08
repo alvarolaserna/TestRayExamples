@@ -1,0 +1,23 @@
+
+Devices:
+  - role: desktopChrome
+    browser: chrome
+  - role: desktopFirefox
+    browser: firefox
+# COMMAND LINE ROLES
+  - role: commandLine,commandLine2
+
+
+Environments:
+  Env1:
+    Vars:
+      MISC: Running miscelaneous stuff
+      TEST: Running tests stuff
+    SetupCommands:
+      - echo "SetUP"
+  Env2:
+    Vars:
+      MISC: Running miscelaneous stuff 2
+      TEST: Running tests stuff 2
+    SetupCommands:
+      - echo "SetUP 2"

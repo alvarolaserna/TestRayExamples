@@ -1,0 +1,8 @@
+CaseForTestsBuild:
+  Step: I run the tests
+  Roles:
+    - Role: commandLine
+      App: command
+  Actions:
+    - Type: command
+      Value: echo "$AND_CLI_TEST$"
