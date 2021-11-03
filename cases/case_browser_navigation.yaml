@@ -1,7 +1,8 @@
 OpenGoogle:
   Roles:
-    - Role: desktopFirefox,desktopChrome
+    - Role: desktopChrome
       App: desktop
   Actions:
     - Given: I open chrome and navigate to google
-    - And: I open firefox and navigate to google
+    - Type: case
+      Value: OpenChromeGoogle

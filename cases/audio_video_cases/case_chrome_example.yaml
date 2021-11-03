@@ -20,3 +20,55 @@ TestBrowserChromeAV:
       Id: webcam-launcher
     - Type: sleep
       Time: 10
+
+NavigateToAppr:
+  Step: I navigate to appr page
+  Roles:
+    - Role: desktopChrome
+      Capabilities:
+        chromeOptions:
+          args:
+            - use-fake-ui-for-media-stream
+            - use-fake-device-for-media-stream
+            - no-sandbox
+      App: desktop
+  Actions:
+    - Type: navigate
+      Role: desktopChrome
+      Value: https://appr.tc/
+
+CreateRoomAppr:
+  Step: I create a room
+  Roles:
+    - Role: desktopChrome
+      Capabilities:
+        chromeOptions:
+          args:
+            - use-fake-ui-for-media-stream
+            - use-fake-device-for-media-stream
+            - no-sandbox
+      App: desktop
+  Actions:
+    - Type: get_attribute
+      Strategy: css
+      Id: "[id=\"room-id-input\"]"
+      Greps:
+        - var: SOME_VAR
+          attr: value
+          condition: nempty
+          match: "(.*)"
+
+CaseAppr:
+  Roles:
+    - Role: desktopChrome,desktopChrome2
+      Capabilities:
+        chromeOptions:
+          args:
+            - use-fake-ui-for-media-stream
+            - use-fake-device-for-media-stream
+            - no-sandbox
+      App: desktop
+  Actions:
+    - Given: I navigate to appr page
+    - Then: I create a room
+    - And: I join with a different user to that same room

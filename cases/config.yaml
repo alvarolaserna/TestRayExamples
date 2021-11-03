@@ -1,6 +1,6 @@
 
 Devices:
-  - role: desktopChrome
+  - role: desktopChrome,desktopChrome2
     browser: chrome
   - role: desktopFirefox
     browser: firefox
