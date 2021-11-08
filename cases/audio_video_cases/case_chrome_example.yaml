@@ -53,10 +53,50 @@ CreateRoomAppr:
       Strategy: css
       Id: "[id=\"room-id-input\"]"
       Greps:
-        - var: SOME_VAR
+        - var: LINK_ID
           attr: value
           condition: nempty
           match: "(.*)"
+    - Type: click
+      Strategy: css
+      Id: "[id=\"join-button\"]"
+      Role: desktopChrome
+    - Type: click
+      Strategy: xpath
+      Id: //body
+    - Type: click
+      Strategy: id
+      Id: mute-audio
+
+
+JoinApprRoom:
+  Step: I join with a different user to that same room
+  Roles:
+    - Role: desktopChrome2
+      Capabilities:
+        chromeOptions:
+          args:
+            - use-fake-ui-for-media-stream
+            - use-fake-device-for-media-stream
+            - no-sandbox
+      App: desktop
+  Actions:
+    - Type: navigate
+      Role: desktopChrome2
+      Value: https://appr.tc/r/$AND_CLI_LINK_ID$
+    - Type: click
+      Strategy: css
+      Id: "[id=\"confirm-join-button\"]"
+    - Type: sleep
+      Time: 10
+    - Type: command
+      Value: "tshark"
+      Detach: true
+    - Type: command
+      Value: "sox"
+      Detach: true
+    - Type: command
+      Value: "ffmpeg"
 
 CaseAppr:
   Roles:
@@ -67,6 +107,8 @@ CaseAppr:
             - use-fake-ui-for-media-stream
             - use-fake-device-for-media-stream
             - no-sandbox
+            - use-file-for-fake-audio-capture=/user/silence.wav
+            - use-file-for-fake-video-capture=/Users/alvarolaserna/Documents/ref_video.mjpeg
       App: desktop
   Actions:
     - Given: I navigate to appr page
