@@ -1,2 +1,6 @@
 Reports
 cucumber_report.html
+*.wav
+*.pcapng
+*.mkv
+*.txt
