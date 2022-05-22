@@ -20,3 +20,105 @@ TestBrowserChromeAV:
       Id: webcam-launcher
     - Type: sleep
       Time: 10
+
+NavigateToWebRTCApp:
+  Step: I navigate to appr page
+  Roles:
+    - Role: desktopChrome
+      Capabilities:
+        chromeOptions:
+          args:
+            - use-fake-ui-for-media-stream
+            - use-fake-device-for-media-stream
+            - no-sandbox
+      App: desktop
+  Actions:
+    - Type: navigate
+      Value: https://webrtc.github.io/samples/src/content/peerconnection/channel/
+
+CreateRoomAppr:
+  Step: I call
+  Roles:
+    - Role: desktopChrome
+      Capabilities:
+        chromeOptions:
+          args:
+            - use-fake-ui-for-media-stream
+            - use-fake-device-for-media-stream
+            - no-sandbox
+      App: desktop
+  Actions:
+    - Type: click
+      Strategy: id
+      Id: "startButton"
+    - Type: maximize
+
+Recordings:
+  Step: I start recording audio, video and traces
+  Roles:
+    - Role: commandLine,commandLine2,commandLine3
+      App: command
+  Actions:
+    - Type: command
+      Value: "tshark -Q -i \"$AND_CLI_INTERFACE$\" -w trace.pcapng -a duration:$AND_CLI_TIME$"
+      Role: commandLine
+    - Type: command
+      Value: "sox -q -r 44100 -t coreaudio \"default\" call.wav trim 0 $AND_CLI_TIME$"
+      Role: commandLine2
+    - Type: command
+      Value: "ffmpeg -v quiet -y -f avfoundation -t $AND_CLI_TIME$ -i \"$AND_CLI_VIDEO_IN$:\" output.mkv"
+      Role: commandLine3
+    - Type: sync
+
+Analysis:
+  Step: I start analysing audio, video and traces
+  Roles:
+    - Role: commandLine
+      App: command
+  Actions:
+    - Type: command
+      Value: sox call.wav -b 16 call_16b.wav
+    - Type: command
+      Value: docker run --rm -v $AND_CMD_pwd$:/home alvarolaserna/visqol:1.0 ./visqol.sh /home/call_16b.wav /home/call_16b.wav > mox_logs.txt
+    - Type: command
+      Value: docker run --rm -v $AND_CMD_pwd$:/home alvarolaserna/visqol:1.0 ./visqol.sh /home/call_16b.wav /home/call_16b.wav
+      Greps:
+        - var: SOME_VAR
+          condition: nempty
+          remove: "MOS-LQO:\t\t"
+          match: "MOS-LQO:\t\t(.*)"
+    - Type: command
+      Value: echo $AND_CLI_SOME_VAR$ > mos.txt
+    - Type: command
+      Value: tshark -r trace.pcapng -qz io,stat,1 > trace.txt
+    - Type: command
+      Value: echo "VIDEO ANALYSIS"
+
+CaseWebRTC:
+  ParallelRoles: true
+  Vars:
+    TIME: 10
+    INTERFACE: en0
+    VIDEO_IN: "2"
+  Roles:
+    - Role: desktopChrome,desktopChrome2
+      Capabilities:
+        chromeOptions:
+          args:
+            - use-fake-ui-for-media-stream
+            - use-fake-device-for-media-stream
+            - no-sandbox
+            - use-file-for-fake-audio-capture=/user/silence.wav
+            - use-file-for-fake-video-capture=/Users/alvarolaserna/Documents/ref_video.mjpeg
+      App: desktop
+    - Role: commandLine,commandLine2,commandLine3
+      App: command
+  Actions:
+    - Given: I navigate to appr page
+      Role: desktopChrome,desktopChrome2
+    - Then: I call
+      Role: desktopChrome,desktopChrome2
+    - Given: I start recording audio, video and traces
+    - Then: I start analysing audio, video and traces
+
+

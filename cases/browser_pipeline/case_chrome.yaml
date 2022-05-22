@@ -6,3 +6,19 @@ OpenChromeGoogle:
   Actions:
     - Type: navigate
       Value: https://google.com
+    - Type: click
+      Strategy: xpath
+      Id: //*[@id='L2AGLb']/div
+    - Type: send_keys
+      Strategy: css
+      Id: .gLFyf.gsfi
+      Value: "TestRay"
+    - Type: click
+      Strategy: 
+        - xpath
+        - xpath
+      Id: 
+        - "(//*[@name='btnK'])[2]"
+        - "(//*[@name='btnK'])[1]"
+    - Type: sleep
+      Time: 5
