@@ -4,3 +4,6 @@ cucumber_report.html
 *.pcapng
 *.mkv
 *.txt
+*.py
+*.jpg
+*.log

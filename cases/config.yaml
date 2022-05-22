@@ -5,7 +5,7 @@ Devices:
   - role: desktopFirefox
     browser: firefox
 # COMMAND LINE ROLES
-  - role: commandLine,commandLine2
+  - role: commandLine,commandLine2,commandLine3
 
 
 Environments:

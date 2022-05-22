@@ -21,7 +21,7 @@ TestBrowserChromeAV:
     - Type: sleep
       Time: 10
 
-NavigateToAppr:
+NavigateToWebRTCApp:
   Step: I navigate to appr page
   Roles:
     - Role: desktopChrome
@@ -34,11 +34,10 @@ NavigateToAppr:
       App: desktop
   Actions:
     - Type: navigate
-      Role: desktopChrome
-      Value: https://appr.tc/
+      Value: https://webrtc.github.io/samples/src/content/peerconnection/channel/
 
 CreateRoomAppr:
-  Step: I create a room
+  Step: I call
   Roles:
     - Role: desktopChrome
       Capabilities:
@@ -49,63 +48,27 @@ CreateRoomAppr:
             - no-sandbox
       App: desktop
   Actions:
-    - Type: get_attribute
-      Strategy: css
-      Id: "[id=\"room-id-input\"]"
-      Greps:
-        - var: LINK_ID
-          attr: value
-          condition: nempty
-          match: "(.*)"
-    - Type: click
-      Strategy: css
-      Id: "[id=\"join-button\"]"
-      Role: desktopChrome
-    - Type: click
-      Strategy: xpath
-      Id: //body
     - Type: click
       Strategy: id
-      Id: mute-audio
+      Id: "startButton"
     - Type: maximize
-      Width: 576
-      Height: 1300
-
-
-JoinApprRoom:
-  Step: I join with a different user to that same room
-  Roles:
-    - Role: desktopChrome2
-      Capabilities:
-        chromeOptions:
-          args:
-            - use-fake-ui-for-media-stream
-            - use-fake-device-for-media-stream
-            - no-sandbox
-      App: desktop
-  Actions:
-    - Type: navigate
-      Role: desktopChrome2
-      Value: https://appr.tc/r/$AND_CLI_LINK_ID$
-    - Type: click
-      Strategy: css
-      Id: "[id=\"confirm-join-button\"]"
-    - Type: minimize
 
 Recordings:
   Step: I start recording audio, video and traces
   Roles:
-    - Role: commandLine
+    - Role: commandLine,commandLine2,commandLine3
       App: command
   Actions:
     - Type: command
       Value: "tshark -Q -i \"$AND_CLI_INTERFACE$\" -w trace.pcapng -a duration:$AND_CLI_TIME$"
-      Detach: true
+      Role: commandLine
     - Type: command
       Value: "sox -q -r 44100 -t coreaudio \"default\" call.wav trim 0 $AND_CLI_TIME$"
-      Detach: true
+      Role: commandLine2
     - Type: command
       Value: "ffmpeg -v quiet -y -f avfoundation -t $AND_CLI_TIME$ -i \"$AND_CLI_VIDEO_IN$:\" output.mkv"
+      Role: commandLine3
+    - Type: sync
 
 Analysis:
   Step: I start analysing audio, video and traces
@@ -128,12 +91,15 @@ Analysis:
       Value: echo $AND_CLI_SOME_VAR$ > mos.txt
     - Type: command
       Value: tshark -r trace.pcapng -qz io,stat,1 > trace.txt
+    - Type: command
+      Value: echo "VIDEO ANALYSIS"
 
-CaseAppr:
+CaseWebRTC:
+  ParallelRoles: true
   Vars:
     TIME: 10
     INTERFACE: en0
-    VIDEO_IN: "3"
+    VIDEO_IN: "2"
   Roles:
     - Role: desktopChrome,desktopChrome2
       Capabilities:
@@ -145,12 +111,13 @@ CaseAppr:
             - use-file-for-fake-audio-capture=/user/silence.wav
             - use-file-for-fake-video-capture=/Users/alvarolaserna/Documents/ref_video.mjpeg
       App: desktop
-    - Role: commandLine
+    - Role: commandLine,commandLine2,commandLine3
       App: command
   Actions:
     - Given: I navigate to appr page
-    - Then: I create a room
-    - And: I join with a different user to that same room
+      Role: desktopChrome,desktopChrome2
+    - Then: I call
+      Role: desktopChrome,desktopChrome2
     - Given: I start recording audio, video and traces
     - Then: I start analysing audio, video and traces
 
