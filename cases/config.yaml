@@ -1,11 +1,17 @@
 
 Devices:
-  - role: desktopChrome,desktopChrome2
+  - role: desktopChrome,desktopChrome2,desktopChrome3
     browser: chrome
   - role: desktopFirefox
     browser: firefox
-# COMMAND LINE ROLES
+  # COMMAND LINE ROLES
   - role: commandLine,commandLine2,commandLine3
+  # ANDROID
+  - role: localAndroid
+    platform: Android
+  # IOS
+  - role: localiOS
+    platform: iOS
 
 
 Environments:

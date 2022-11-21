@@ -95,7 +95,7 @@ LimitNetwork:
       App: command
   Actions:
     - Type: command
-      Value: echo "Limit Network"
+      Value: echo "Limit Network" # ssh user@IP_ROUTER sh wrapper_tc.sh 3000 0 5 1000
 
 CaseWebRTC:
   ParallelRoles: true

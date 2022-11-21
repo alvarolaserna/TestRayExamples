@@ -1,0 +1,16 @@
+TestSafariIOSAV:
+  Roles:
+    - Role: localiOS
+      App: browser
+      # Capabilities:
+      #   udid: 
+  Actions:
+    - Type: navigate
+      Role: localiOS
+      Value: https://webcamtests.com/
+    - Type: click
+      Strategy: id
+      Role: localiOS
+      Id: webcam-launcher
+    - Type: sleep
+      Time: 10
