@@ -1,3 +1,21 @@
+TestAgent:
+  Roles:
+    - Role: desktopChrome
+      Capabilities:
+        chromeOptions:
+          args:
+            - use-fake-ui-for-media-stream
+            - use-fake-device-for-media-stream
+            - no-sandbox
+            - --user-agent=Agent
+      App: desktop
+  Actions:
+    - Type: navigate
+      Role: desktopChrome
+      Value: https://www.whatsmyua.info/
+    - Type: sleep
+      Time: 100
+
 TestBrowserChromeAV:
   Roles:
     - Role: desktopChrome
@@ -17,18 +35,12 @@ TestBrowserChromeAV:
       Role: desktopChrome
       Id: webcam-launcher
     - Type: sleep
-      Time: 10
+      Time: 100
 
 NavigateToWebRTCApp:
   Step: I navigate to video app page and call
   Roles:
-    - Role: desktopChrome
-      Capabilities:
-        chromeOptions:
-          args:
-            - use-fake-ui-for-media-stream
-            - use-fake-device-for-media-stream
-            - no-sandbox
+    - Role: desktopChrome # Default Role
       App: desktop
   Actions:
     - Type: navigate
@@ -58,10 +70,10 @@ Recordings:
       Role: commandLine
     - Type: command
       Value: "sox -q -r 44100 -t coreaudio \"default\" call.wav trim 0 $AND_CLI_TIME$"
-      Role: commandLine2
+      Role: commandLine
     - Type: command
       Value: "ffmpeg -v quiet -y -f avfoundation -t $AND_CLI_TIME$ -i \"$AND_CLI_VIDEO_IN$:\" output.mkv"
-      Role: commandLine3
+      Role: commandLine
     - Type: sync
 
 Analysis:
@@ -112,7 +124,7 @@ CaseWebRTC:
             - use-fake-device-for-media-stream
             - no-sandbox
             - use-file-for-fake-audio-capture=/user/silence.wav
-            - use-file-for-fake-video-capture=/Users/alvarolaserna/Documents/ref_video.mjpeg
+            - use-file-for-fake-video-capture=/Users/$AND_CLI_USER$/Documents/ref_video.mjpeg
       App: desktop
     - Role: commandLine,commandLine2,commandLine3
       App: command

@@ -1,6 +1,21 @@
 
+Apps:
+  Chrome:
+    Package: com.android.chrome
+  PlayStore:
+    Package: com.android.vending
+    Activity: com.android.vending.AssetBrowserActivity
+  Whatever:
+    iOSBundle: com.apple.Preferences
+
 Devices:
   - role: desktopChrome,desktopChrome2,desktopChrome3
+    capabilities:
+      chromeOptions:
+        args:
+          - use-fake-ui-for-media-stream
+          - use-fake-device-for-media-stream
+          - no-sandbox
     browser: chrome
   - role: desktopFirefox
     browser: firefox
@@ -12,6 +27,8 @@ Devices:
   # IOS
   - role: localiOS
     platform: iOS
+    capabilities:
+      udid: $AND_CLI_IOS_DEVICE$
 
 
 Environments:

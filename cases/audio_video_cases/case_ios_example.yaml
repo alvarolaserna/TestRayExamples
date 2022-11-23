@@ -2,8 +2,8 @@ TestSafariIOSAV:
   Roles:
     - Role: localiOS
       App: browser
-      # Capabilities:
-      #   udid: 
+      Capabilities:
+        udid: 54BCA3B7-9178-4021-B31E-211E0741983F
   Actions:
     - Type: navigate
       Role: localiOS

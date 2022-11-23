@@ -1,0 +1,7 @@
+CreateFolder:
+  Roles:
+    - Role: commandLine
+      App: command
+  Actions:
+    - Type: command
+      Value: mkdir $AND_CMD_date +%s$
